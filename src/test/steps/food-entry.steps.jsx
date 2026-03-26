@@ -1,11 +1,11 @@
 import { cleanup, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import App from '../../App'
-import { Given, When, Then, And, feature } from '../gherkin'
+import { Given, When, Then, And, feature, beforeEachScenario } from '../gherkin'
 
 let user
 
-Given('I open the app', async () => {
+beforeEachScenario(async () => {
   cleanup()
   user = userEvent.setup()
   render(<App />)

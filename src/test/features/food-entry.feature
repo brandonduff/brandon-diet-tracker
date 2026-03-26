@@ -1,8 +1,5 @@
 Feature: Food entry
 
-  Background:
-    Given I open the app
-
   Scenario: Add a food entry and see it in the list
     When I add "Chicken" with 280 calories and 52g protein
     Then I should see "Chicken" in the entry list

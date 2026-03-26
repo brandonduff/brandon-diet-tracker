@@ -58,12 +58,19 @@ function parseFeatureFile(filePath) {
   return { featureName, scenarios }
 }
 
+let beforeEachScenarioFn = null
+
+export function beforeEachScenario(fn) {
+  beforeEachScenarioFn = fn
+}
+
 export function feature(filePath) {
   const { featureName, scenarios } = parseFeatureFile(filePath)
 
   describe(featureName, () => {
     for (const scenario of scenarios) {
       it(scenario.name, async () => {
+        if (beforeEachScenarioFn) await beforeEachScenarioFn()
         for (const stepText of scenario.steps) {
           const match = matchStep(stepText)
           if (!match) {
