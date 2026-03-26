@@ -94,7 +94,7 @@ brandon-diet-tracker/
 3. On selecting a suggestion, auto-fill calories & protein with the last-used values
 4. User can override before saving
 
-## Open Questions
-1. **Goals** — Do you want to set a daily calorie/protein target and see progress toward it?
-2. **Hosting** — Any preference? (Vercel, Netlify, GitHub Pages all work great for this)
-3. **Auth / sync** — Is local-only (per-device) fine for v1, or do you need it on multiple devices right away?
+## Resolved Questions
+1. **Goals** — Just totals for v1, no target/progress bar
+2. **Hosting** — GitHub Pages
+3. **Auth / sync** — Local-only for v1
