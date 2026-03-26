@@ -109,6 +109,44 @@ describe('FoodEntryForm', () => {
     expect(screen.getByLabelText('Calories')).toHaveValue(5)
   })
 
+  it('does not submit with empty name', async () => {
+    const user = userEvent.setup()
+    const onAdd = vi.fn()
+    render(<FoodEntryForm onAdd={onAdd} />)
+
+    await user.type(screen.getByLabelText('Calories'), '100')
+    await user.click(screen.getByText('Add'))
+
+    expect(onAdd).not.toHaveBeenCalled()
+  })
+
+  it('does not submit with no calories', async () => {
+    const user = userEvent.setup()
+    const onAdd = vi.fn()
+    render(<FoodEntryForm onAdd={onAdd} />)
+
+    await user.type(screen.getByLabelText('Food name'), 'Chicken')
+    await user.click(screen.getByText('Add'))
+
+    expect(onAdd).not.toHaveBeenCalled()
+  })
+
+  it('clears fields after successful submit', async () => {
+    const user = userEvent.setup()
+    render(<FoodEntryForm onAdd={() => {}} />)
+
+    await user.type(screen.getByLabelText('Food name'), 'Chicken')
+    await user.type(screen.getByLabelText('Amount (g)'), '150')
+    await user.type(screen.getByLabelText('Calories'), '280')
+    await user.type(screen.getByLabelText('Protein (g)'), '52')
+    await user.click(screen.getByText('Add'))
+
+    expect(screen.getByLabelText('Food name')).toHaveValue('')
+    expect(screen.getByLabelText('Amount (g)')).toHaveValue(null)
+    expect(screen.getByLabelText('Calories')).toHaveValue(null)
+    expect(screen.getByLabelText('Protein (g)')).toHaveValue(null)
+  })
+
   it('reverts to catalog values when amount is cleared', async () => {
     const user = userEvent.setup()
     const suggestions = [

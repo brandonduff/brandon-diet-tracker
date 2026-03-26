@@ -23,6 +23,7 @@ Process improvements — making making. Skills, workflows, tooling, conventions.
 - **Testing philosophy (post-TDD?)** — Strict red-green-refactor adds less value in agent-driven development since the agent isn't "discovering" design through small steps. But tests themselves are MORE valuable — they're how the human verifies correctness without reading every line. Current approach: tests are mandatory for all changes, but strict TDD ceremony is optional. Write tests alongside or after implementation, whichever flows better. Revisit if quality slips.
 - **Deploy bootstrap is awkward** — Branch protection with required status checks creates a chicken-and-egg problem when the workflow file itself needs to be pushed. Had to temporarily relax protection. Consider adding a note to the workflow skill about this for new repos.
 - **`npm run deploy` is now redundant** — CI handles deployment. Could remove the `gh-pages` dependency and script, or keep as a manual escape hatch.
+- **Service worker caching** — Original cache-first strategy prevented deploys from being picked up. Fixed to network-first. Keep an eye on this if offline support becomes important (may want a smarter strategy with versioned asset hashing).
 
 
 ## Done

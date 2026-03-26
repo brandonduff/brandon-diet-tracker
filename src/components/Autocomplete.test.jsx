@@ -29,7 +29,8 @@ describe('Autocomplete', () => {
     expect(screen.getAllByRole('option')).toHaveLength(3)
   })
 
-  it('filters suggestions by input value', () => {
+  it('filters suggestions by input value', async () => {
+    const user = userEvent.setup()
     render(
       <Autocomplete
         value="chick"
@@ -40,9 +41,12 @@ describe('Autocomplete', () => {
       />
     )
 
-    // Simulate focus state by checking that filtered results would show
-    // The component needs showSuggestions=true which happens on focus/change
-    // We test the filtering logic indirectly through the full flow
+    await user.click(screen.getByLabelText('Food name'))
+    const options = screen.getAllByRole('option')
+    expect(options).toHaveLength(2)
+    expect(options[0]).toHaveTextContent('Chicken breast')
+    expect(options[1]).toHaveTextContent('Chicken thigh')
+    expect(screen.queryByText('Rice')).not.toBeInTheDocument()
   })
 
   it('calls onSelect when a suggestion is clicked', async () => {
@@ -93,6 +97,27 @@ describe('Autocomplete', () => {
     // "Chicken breast" (prefix match) should come before "Fried chicken" (substring)
     expect(options[0]).toHaveTextContent('Chicken breast')
     expect(options[1]).toHaveTextContent('Fried chicken')
+  })
+
+  it('caps visible suggestions at 8', async () => {
+    const user = userEvent.setup()
+    const manySuggestions = Array.from({ length: 12 }, (_, i) => ({
+      name: `Food ${i + 1}`,
+      calories: 100,
+      protein: 10,
+    }))
+    render(
+      <Autocomplete
+        value=""
+        onChange={() => {}}
+        suggestions={manySuggestions}
+        onSelect={() => {}}
+        placeholder="Food name"
+      />
+    )
+
+    await user.click(screen.getByLabelText('Food name'))
+    expect(screen.getAllByRole('option')).toHaveLength(8)
   })
 
   it('hides suggestions when no matches', async () => {
