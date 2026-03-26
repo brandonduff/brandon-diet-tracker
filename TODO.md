@@ -2,6 +2,7 @@
 
 ## Up Next
 
+- [ ] Scaffold project — [001-scaffold](plans/001-scaffold.md)
 
 ## Ideas
 
