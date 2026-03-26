@@ -64,10 +64,25 @@ Each gets a basic unit test.
 
 ## Test List
 
-1. Dev server starts and renders the App component
-2. Each component renders without crashing
-3. `storage.js` — read returns empty array for unknown date key
-4. `storage.js` — write and read round-trips an entry
-5. `foodCatalog.js` — returns empty array when catalog is empty
-6. `useEntries` hook — returns empty entries array initially
-7. Production build succeeds with no errors
+1. ✅ Dev server starts and renders the App component
+2. ✅ Each component renders without crashing (DailySummary, EntryList, FoodEntryForm)
+3. ✅ `storage.js` — read returns empty array for unknown date key
+4. ✅ `storage.js` — write and read round-trips an entry
+5. ✅ `foodCatalog.js` — returns empty array when catalog is empty
+6. ✅ `foodCatalog.js` — finds matching items after update, deduplicates on update
+7. ✅ `FoodEntryForm` — calls onAdd with correct data on submit
+8. ✅ Production build succeeds with no errors
+
+## Reflection
+
+### What went well
+- Components and storage utils came together quickly
+- Test coverage is solid for a scaffold — 12 tests covering all components and utilities
+
+### What was awkward
+- **Node 25 localStorage conflict**: Node 25 ships a built-in `localStorage` global that lacks the standard Web Storage API methods (`getItem`, `setItem`, `clear`). This overrides both jsdom's and happy-dom's implementations. Required a manual polyfill in test setup. This burned several iterations.
+- **happy-dom cleanup**: React Testing Library's auto-cleanup doesn't work with happy-dom in vitest — had to add explicit `cleanup()` in the setup file's `afterEach`.
+- **Vite scaffold in existing repo**: `npm create vite` doesn't work well in an existing directory. Had to scaffold to a temp dir and copy files.
+
+### Process improvements
+- Added to TODO: document the Node 25 localStorage workaround for future reference
