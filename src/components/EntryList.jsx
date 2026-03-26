@@ -12,7 +12,7 @@ export function EntryList({ entries, onDelete }) {
           <div>
             <div className="font-medium">{entry.name}</div>
             <div className="text-sm text-gray-500">
-              {entry.calories} cal · {entry.protein}g protein
+              {entry.amount ? `${entry.amount}g · ` : ''}{entry.calories} cal · {entry.protein}g protein
             </div>
           </div>
           {onDelete && (

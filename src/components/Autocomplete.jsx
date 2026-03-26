@@ -59,7 +59,7 @@ export function Autocomplete({ value, onChange, suggestions, onSelect, placehold
             >
               <span className="font-medium">{s.name}</span>
               <span className="text-sm text-gray-500 ml-2">
-                {s.calories} cal · {s.protein}g
+                {s.amount ? `${s.amount}g · ` : ''}{s.calories} cal · {s.protein}g
               </span>
             </li>
           ))}

@@ -7,11 +7,19 @@ export function getCatalog() {
 
 export function updateCatalog(entry) {
   const catalog = getCatalog()
-  catalog[entry.name.toLowerCase()] = {
+  const item = {
     name: entry.name,
     calories: entry.calories,
     protein: entry.protein,
+    amount: entry.amount || null,
+    caloriesPerGram: null,
+    proteinPerGram: null,
   }
+  if (entry.amount && entry.amount > 0) {
+    item.caloriesPerGram = entry.calories / entry.amount
+    item.proteinPerGram = entry.protein / entry.amount
+  }
+  catalog[entry.name.toLowerCase()] = item
   localStorage.setItem(CATALOG_KEY, JSON.stringify(catalog))
 }
 

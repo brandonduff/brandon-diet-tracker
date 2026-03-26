@@ -17,4 +17,20 @@ describe('EntryList', () => {
     expect(screen.getByText('Chicken')).toBeInTheDocument()
     expect(screen.getByText('Rice')).toBeInTheDocument()
   })
+
+  it('displays amount when present', () => {
+    const entries = [
+      { id: '1', name: 'Chicken', amount: 150, calories: 280, protein: 52 },
+    ]
+    render(<EntryList entries={entries} />)
+    expect(screen.getByText('150g · 280 cal · 52g protein')).toBeInTheDocument()
+  })
+
+  it('displays without amount when absent', () => {
+    const entries = [
+      { id: '1', name: 'Coffee', calories: 5, protein: 0 },
+    ]
+    render(<EntryList entries={entries} />)
+    expect(screen.getByText('5 cal · 0g protein')).toBeInTheDocument()
+  })
 })
