@@ -3,6 +3,7 @@
 ## Up Next
 
 - [ ] (next feature TBD)
+- [x] Test coverage gaps — [005-test-coverage](plans/005-test-coverage.md)
 
 ## Ideas
 
