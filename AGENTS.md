@@ -34,12 +34,22 @@ TODO.md             # Lightweight tracking of ideas and work items
 
 ```bash
 npm install          # Install dependencies
-npm run dev          # Dev server
+npm run dev          # Dev server (http://localhost:5173/brandon-diet-tracker/)
 npm run build        # Production build
 npm run preview      # Preview production build
 npm test             # Run tests
-npm run deploy       # Deploy to GitHub Pages
+npm run deploy       # Deploy to GitHub Pages (legacy, prefer pushing to main)
 ```
+
+## CI/CD
+
+Push to `main` triggers GitHub Actions (`.github/workflows/deploy.yml`):
+1. **test** — `npm ci` + `npm test` (must pass)
+2. **deploy** — builds and deploys to GitHub Pages
+
+Live at: https://brandonduff.github.io/brandon-diet-tracker/
+
+Branch protection on `main`: status checks required for non-admins. Repo owner (brandonduff) can push directly.
 
 ## Code Conventions
 
