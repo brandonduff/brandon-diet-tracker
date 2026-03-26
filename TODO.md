@@ -2,7 +2,7 @@
 
 ## Up Next
 
-- [ ] Optional amount with auto-scaling — [004-optional-amount](plans/004-optional-amount.md)
+- [ ] (next feature TBD)
 
 ## Ideas
 
@@ -30,3 +30,4 @@ Process improvements — making making. Skills, workflows, tooling, conventions.
 - [x] Scaffold project — [001-scaffold](plans/001-scaffold.md)
 - [x] CI/CD pipeline + branch protection
 - [x] Autocomplete from history — [002-autocomplete](plans/002-autocomplete.md)
+- [x] Optional amount with auto-scaling — [004-optional-amount](plans/004-optional-amount.md)

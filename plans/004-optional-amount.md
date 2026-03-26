@@ -95,3 +95,13 @@ Most foods have a natural "per serving" relationship. If you know chicken breast
 - **Amount cleared after filling**: Treat as "no amount" — keep whatever calories/protein the user has typed.
 - **Existing catalog entries without amounts**: No migration needed. They just don't have per-gram rates, so no scaling happens.
 - **Rounding**: Always round scaled calories/protein to nearest integer for display and storage.
+
+## Reflection
+
+### What went well
+- Clean implementation. The per-gram rate approach works naturally — catalog stores rates, form does the math.
+- Only one test needed updating (catalog test expected exact shape, switched to `toMatchObject`).
+- 8 new tests including scaling, revert-on-clear, and no-scale-without-rates — all passed.
+
+### What was awkward
+- Nothing significant. The `catalogRef` pattern in FoodEntryForm (using useRef to remember which catalog entry was selected) is a bit unusual but avoids prop-drilling or extra state.
