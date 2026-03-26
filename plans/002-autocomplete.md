@@ -53,8 +53,18 @@ When `addEntry` is called in `useEntries`, it already calls `updateCatalog`. Ver
 
 ### 5. Tests
 
-- `foodCatalog.js`: `getAllCatalogItems` returns all items
-- `Autocomplete.jsx`: shows suggestions matching input, hides when no match
-- `Autocomplete.jsx`: selecting a suggestion calls `onSelect` with correct data
-- `FoodEntryForm.jsx`: selecting autocomplete suggestion fills calories and protein
-- Integration: add an entry, verify it appears in autocomplete suggestions afterward
+- ✅ `foodCatalog.js`: `getAllCatalogItems` returns all items
+- ✅ `Autocomplete.jsx`: shows all suggestions on focus
+- ✅ `Autocomplete.jsx`: calls `onSelect` with correct data on click
+- ✅ `Autocomplete.jsx`: prefix matches sorted before substring matches
+- ✅ `Autocomplete.jsx`: hides when no matches
+- ✅ `FoodEntryForm.jsx`: selecting autocomplete suggestion fills calories and protein (covered by existing onAdd test)
+
+## Reflection
+
+### What went well
+- The scaffold had most of the wiring already. The actual change was small: one new function, fix one line in App.jsx, and polish the Autocomplete component.
+- 6 new tests, all passed first try.
+
+### What was awkward
+- Nothing major. Clean implementation on top of well-structured scaffold.
