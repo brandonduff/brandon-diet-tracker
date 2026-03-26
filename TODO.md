@@ -2,7 +2,7 @@
 
 ## Up Next
 
-- [ ] (next feature TBD)
+- [ ] Optional amount with auto-scaling — [004-optional-amount](plans/004-optional-amount.md)
 
 ## Ideas
 
