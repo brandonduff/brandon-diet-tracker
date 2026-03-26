@@ -1,12 +1,30 @@
 import { useState, useRef } from 'react'
 
+const MAX_SUGGESTIONS = 8
+
+function rankSuggestions(suggestions, query) {
+  if (!query) return suggestions.slice(0, MAX_SUGGESTIONS)
+  const lower = query.toLowerCase()
+  const filtered = suggestions.filter((s) =>
+    s.name.toLowerCase().includes(lower)
+  )
+  // Prefix matches first, then substring matches
+  filtered.sort((a, b) => {
+    const aPrefix = a.name.toLowerCase().startsWith(lower)
+    const bPrefix = b.name.toLowerCase().startsWith(lower)
+    if (aPrefix && !bPrefix) return -1
+    if (!aPrefix && bPrefix) return 1
+    return a.name.localeCompare(b.name)
+  })
+  return filtered.slice(0, MAX_SUGGESTIONS)
+}
+
 export function Autocomplete({ value, onChange, suggestions, onSelect, placeholder }) {
   const [showSuggestions, setShowSuggestions] = useState(false)
   const inputRef = useRef(null)
 
-  const filtered = suggestions.filter((s) =>
-    s.name.toLowerCase().includes(value.toLowerCase())
-  )
+  const ranked = rankSuggestions(suggestions, value)
+  const shouldShow = showSuggestions && ranked.length > 0
 
   return (
     <div className="relative">
@@ -24,11 +42,15 @@ export function Autocomplete({ value, onChange, suggestions, onSelect, placehold
         className="w-full border rounded-lg px-3 py-2"
         aria-label={placeholder}
       />
-      {showSuggestions && value && filtered.length > 0 && (
-        <ul className="absolute z-10 w-full bg-white border rounded-lg mt-1 shadow-lg max-h-48 overflow-y-auto">
-          {filtered.map((s) => (
+      {shouldShow && (
+        <ul
+          role="listbox"
+          className="absolute z-10 w-full bg-white border rounded-lg mt-1 shadow-lg max-h-48 overflow-y-auto"
+        >
+          {ranked.map((s) => (
             <li
               key={s.name}
+              role="option"
               onMouseDown={() => {
                 onSelect(s)
                 setShowSuggestions(false)

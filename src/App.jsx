@@ -4,7 +4,7 @@ import { EntryList } from './components/EntryList'
 import { FoodEntryForm } from './components/FoodEntryForm'
 import { DatePicker } from './components/DatePicker'
 import { useEntries } from './hooks/useEntries'
-import { searchCatalog } from './utils/foodCatalog'
+import { getAllCatalogItems } from './utils/foodCatalog'
 
 function todayString() {
   return new Date().toISOString().split('T')[0]
@@ -20,7 +20,7 @@ export default function App() {
   }, [date, reload])
 
   useEffect(() => {
-    setSuggestions(searchCatalog(''))
+    setSuggestions(getAllCatalogItems())
   }, [entries])
 
   return (
