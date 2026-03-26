@@ -25,19 +25,34 @@ function parseFeatureFile(filePath) {
   const lines = content.split('\n').map((l) => l.trim()).filter(Boolean)
 
   let featureName = ''
+  let backgroundSteps = []
   const scenarios = []
   let current = null
+  let inBackground = false
 
   for (const line of lines) {
     if (line.startsWith('Feature:')) {
       featureName = line.slice('Feature:'.length).trim()
+    } else if (line.startsWith('Background:')) {
+      inBackground = true
+      current = null
     } else if (line.startsWith('Scenario:')) {
+      inBackground = false
       current = { name: line.slice('Scenario:'.length).trim(), steps: [] }
       scenarios.push(current)
     } else if (/^(Given|When|Then|And|But)\s/.test(line)) {
       const text = line.replace(/^(Given|When|Then|And|But)\s+/, '')
-      current?.steps.push(text)
+      if (inBackground) {
+        backgroundSteps.push(text)
+      } else {
+        current?.steps.push(text)
+      }
     }
+  }
+
+  // Prepend background steps to each scenario
+  for (const s of scenarios) {
+    s.steps = [...backgroundSteps, ...s.steps]
   }
 
   return { featureName, scenarios }
