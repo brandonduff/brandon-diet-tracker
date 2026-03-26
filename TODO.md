@@ -11,6 +11,7 @@
 - Daily calorie/protein goals with progress bars
 - Export data (CSV)
 - Backend sync for multi-device
+- Subagent orchestration — [003-subagent-setup](plans/003-subagent-setup.md)
 
 ## Process
 
