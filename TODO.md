@@ -33,3 +33,6 @@ Process improvements — making making. Skills, workflows, tooling, conventions.
 - [x] CI/CD pipeline + branch protection
 - [x] Autocomplete from history — [002-autocomplete](plans/002-autocomplete.md)
 - [x] Optional amount with auto-scaling — [004-optional-amount](plans/004-optional-amount.md)
+- [x] Test coverage gaps — [005-test-coverage](plans/005-test-coverage.md)
+- [x] Gherkin behavioral specs — [006-gherkin-spike](plans/006-gherkin-spike.md)
+- [x] Svelte port (reverted) — [007-svelte-port](plans/007-svelte-port.md)

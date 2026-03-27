@@ -7,7 +7,7 @@
 - **Storage:** localStorage (no backend)
 - **PWA:** Service worker + manifest for "Add to Home Screen"
 - **Hosting:** GitHub Pages
-- **Testing:** Vitest + React Testing Library + happy-dom
+- **Testing:** Vitest + React Testing Library + happy-dom + Gherkin behavioral specs
 
 ## Development Model
 
