@@ -4,6 +4,8 @@
 
 - [ ] (next feature TBD)
 - [x] Test coverage gaps — [005-test-coverage](plans/005-test-coverage.md)
+- [x] Gherkin behavioral specs — [006-gherkin-spike](plans/006-gherkin-spike.md)
+- [x] Svelte port — [007-svelte-port](plans/007-svelte-port.md)
 
 ## Ideas
 

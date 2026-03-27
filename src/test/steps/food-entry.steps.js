@@ -1,6 +1,6 @@
-import { cleanup, render, screen } from '@testing-library/react'
+import { cleanup, render, screen } from '@testing-library/svelte'
 import userEvent from '@testing-library/user-event'
-import App from '../../App'
+import App from '../../App.svelte'
 import { Given, When, Then, And, feature, beforeEachScenario } from '../gherkin'
 
 let user
@@ -8,7 +8,7 @@ let user
 beforeEachScenario(async () => {
   cleanup()
   user = userEvent.setup()
-  render(<App />)
+  render(App)
 })
 
 When(/^I add "(.+)" with (\d+) calories and (\d+)g protein$/, async (name, cal, protein) => {

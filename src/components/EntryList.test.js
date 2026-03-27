@@ -1,11 +1,11 @@
 import { describe, it, expect, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/svelte'
 import userEvent from '@testing-library/user-event'
-import { EntryList } from './EntryList'
+import EntryList from './EntryList.svelte'
 
 describe('EntryList', () => {
   it('shows empty message when no entries', () => {
-    render(<EntryList entries={[]} />)
+    render(EntryList, { props: { entries: [] } })
     expect(screen.getByText('No entries yet')).toBeInTheDocument()
   })
 
@@ -14,7 +14,7 @@ describe('EntryList', () => {
       { id: '1', name: 'Chicken', calories: 280, protein: 52 },
       { id: '2', name: 'Rice', calories: 200, protein: 4 },
     ]
-    render(<EntryList entries={entries} />)
+    render(EntryList, { props: { entries } })
     expect(screen.getByText('Chicken')).toBeInTheDocument()
     expect(screen.getByText('Rice')).toBeInTheDocument()
   })
@@ -23,7 +23,7 @@ describe('EntryList', () => {
     const entries = [
       { id: '1', name: 'Chicken', amount: 150, calories: 280, protein: 52 },
     ]
-    render(<EntryList entries={entries} />)
+    render(EntryList, { props: { entries } })
     expect(screen.getByText('150g · 280 cal · 52g protein')).toBeInTheDocument()
   })
 
@@ -31,7 +31,7 @@ describe('EntryList', () => {
     const entries = [
       { id: '1', name: 'Coffee', calories: 5, protein: 0 },
     ]
-    render(<EntryList entries={entries} />)
+    render(EntryList, { props: { entries } })
     expect(screen.getByText('5 cal · 0g protein')).toBeInTheDocument()
   })
 
@@ -42,7 +42,7 @@ describe('EntryList', () => {
       { id: '1', name: 'Chicken', calories: 280, protein: 52 },
       { id: '2', name: 'Rice', calories: 200, protein: 4 },
     ]
-    render(<EntryList entries={entries} onDelete={onDelete} />)
+    render(EntryList, { props: { entries, onDelete } })
 
     await user.click(screen.getByLabelText('Delete Chicken'))
     expect(onDelete).toHaveBeenCalledWith('1')
@@ -52,7 +52,7 @@ describe('EntryList', () => {
     const entries = [
       { id: '1', name: 'Chicken', calories: 280, protein: 52 },
     ]
-    render(<EntryList entries={entries} />)
+    render(EntryList, { props: { entries } })
     expect(screen.queryByLabelText('Delete Chicken')).not.toBeInTheDocument()
   })
 })

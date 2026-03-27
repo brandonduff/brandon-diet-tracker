@@ -1,11 +1,11 @@
 import { describe, it, expect, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/svelte'
 import userEvent from '@testing-library/user-event'
-import { FoodEntryForm } from './FoodEntryForm'
+import FoodEntryForm from './FoodEntryForm.svelte'
 
 describe('FoodEntryForm', () => {
   it('renders input fields and submit button', () => {
-    render(<FoodEntryForm />)
+    render(FoodEntryForm)
     expect(screen.getByLabelText('Food name')).toBeInTheDocument()
     expect(screen.getByLabelText('Amount (g)')).toBeInTheDocument()
     expect(screen.getByLabelText('Calories')).toBeInTheDocument()
@@ -16,7 +16,7 @@ describe('FoodEntryForm', () => {
   it('submits without amount', async () => {
     const user = userEvent.setup()
     const onAdd = vi.fn()
-    render(<FoodEntryForm onAdd={onAdd} />)
+    render(FoodEntryForm, { props: { onAdd } })
 
     await user.type(screen.getByLabelText('Food name'), 'Coffee')
     await user.type(screen.getByLabelText('Calories'), '5')
@@ -32,7 +32,7 @@ describe('FoodEntryForm', () => {
   it('submits with amount when provided', async () => {
     const user = userEvent.setup()
     const onAdd = vi.fn()
-    render(<FoodEntryForm onAdd={onAdd} />)
+    render(FoodEntryForm, { props: { onAdd } })
 
     await user.type(screen.getByLabelText('Food name'), 'Chicken')
     await user.type(screen.getByLabelText('Amount (g)'), '150')
@@ -60,24 +60,20 @@ describe('FoodEntryForm', () => {
         proteinPerGram: 52 / 150,
       },
     ]
-    render(<FoodEntryForm suggestions={suggestions} />)
+    render(FoodEntryForm, { props: { suggestions } })
 
-    // Trigger autocomplete
     const nameInput = screen.getByLabelText('Food name')
     await user.click(nameInput)
     await user.click(screen.getByText('Chicken'))
 
-    // Verify prefilled values
     expect(screen.getByLabelText('Amount (g)')).toHaveValue(150)
     expect(screen.getByLabelText('Calories')).toHaveValue(280)
     expect(screen.getByLabelText('Protein (g)')).toHaveValue(52)
 
-    // Change amount to 200
     const amountInput = screen.getByLabelText('Amount (g)')
     await user.clear(amountInput)
     await user.type(amountInput, '200')
 
-    // Should scale: 280/150*200 = 373, 52/150*200 = 69
     expect(screen.getByLabelText('Calories')).toHaveValue(373)
     expect(screen.getByLabelText('Protein (g)')).toHaveValue(69)
   })
@@ -94,17 +90,15 @@ describe('FoodEntryForm', () => {
         proteinPerGram: null,
       },
     ]
-    render(<FoodEntryForm suggestions={suggestions} />)
+    render(FoodEntryForm, { props: { suggestions } })
 
     const nameInput = screen.getByLabelText('Food name')
     await user.click(nameInput)
     await user.click(screen.getByText('Coffee'))
 
-    // Prefilled without amount
     expect(screen.getByLabelText('Amount (g)')).toHaveValue(null)
     expect(screen.getByLabelText('Calories')).toHaveValue(5)
 
-    // Typing an amount should not change calories
     await user.type(screen.getByLabelText('Amount (g)'), '200')
     expect(screen.getByLabelText('Calories')).toHaveValue(5)
   })
@@ -112,7 +106,7 @@ describe('FoodEntryForm', () => {
   it('does not submit with empty name', async () => {
     const user = userEvent.setup()
     const onAdd = vi.fn()
-    render(<FoodEntryForm onAdd={onAdd} />)
+    render(FoodEntryForm, { props: { onAdd } })
 
     await user.type(screen.getByLabelText('Calories'), '100')
     await user.click(screen.getByText('Add'))
@@ -123,7 +117,7 @@ describe('FoodEntryForm', () => {
   it('does not submit with no calories', async () => {
     const user = userEvent.setup()
     const onAdd = vi.fn()
-    render(<FoodEntryForm onAdd={onAdd} />)
+    render(FoodEntryForm, { props: { onAdd } })
 
     await user.type(screen.getByLabelText('Food name'), 'Chicken')
     await user.click(screen.getByText('Add'))
@@ -133,7 +127,7 @@ describe('FoodEntryForm', () => {
 
   it('clears fields after successful submit', async () => {
     const user = userEvent.setup()
-    render(<FoodEntryForm onAdd={() => {}} />)
+    render(FoodEntryForm, { props: { onAdd: () => {} } })
 
     await user.type(screen.getByLabelText('Food name'), 'Chicken')
     await user.type(screen.getByLabelText('Amount (g)'), '150')
@@ -159,20 +153,18 @@ describe('FoodEntryForm', () => {
         proteinPerGram: 52 / 150,
       },
     ]
-    render(<FoodEntryForm suggestions={suggestions} />)
+    render(FoodEntryForm, { props: { suggestions } })
 
     const nameInput = screen.getByLabelText('Food name')
     await user.click(nameInput)
     await user.click(screen.getByText('Chicken'))
 
-    // Change amount, then clear it
     const amountInput = screen.getByLabelText('Amount (g)')
     await user.clear(amountInput)
     await user.type(amountInput, '200')
     expect(screen.getByLabelText('Calories')).toHaveValue(373)
 
     await user.clear(amountInput)
-    // Should revert to catalog raw values
     expect(screen.getByLabelText('Calories')).toHaveValue(280)
     expect(screen.getByLabelText('Protein (g)')).toHaveValue(52)
   })
