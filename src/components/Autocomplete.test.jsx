@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
-import { render, screen } from '@testing-library/svelte'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import Autocomplete from './Autocomplete.svelte'
+import { Autocomplete } from './Autocomplete'
 
 const suggestions = [
   { name: 'Chicken breast', calories: 280, protein: 52 },
@@ -12,20 +12,34 @@ const suggestions = [
 describe('Autocomplete', () => {
   it('shows matching suggestions when typing', async () => {
     const user = userEvent.setup()
-    render(Autocomplete, {
-      props: { value: '', onChange: () => {}, suggestions, onSelect: () => {}, placeholder: 'Food name' },
-    })
+    render(
+      <Autocomplete
+        value=""
+        onChange={() => {}}
+        suggestions={suggestions}
+        onSelect={() => {}}
+        placeholder="Food name"
+      />
+    )
 
-    await user.click(screen.getByLabelText('Food name'))
+    const input = screen.getByLabelText('Food name')
+    await user.click(input)
+    // All suggestions shown on focus when value is empty
     expect(screen.getByRole('listbox')).toBeInTheDocument()
     expect(screen.getAllByRole('option')).toHaveLength(3)
   })
 
   it('filters suggestions by input value', async () => {
     const user = userEvent.setup()
-    render(Autocomplete, {
-      props: { value: 'chick', onChange: () => {}, suggestions, onSelect: () => {}, placeholder: 'Food name' },
-    })
+    render(
+      <Autocomplete
+        value="chick"
+        onChange={() => {}}
+        suggestions={suggestions}
+        onSelect={() => {}}
+        placeholder="Food name"
+      />
+    )
 
     await user.click(screen.getByLabelText('Food name'))
     const options = screen.getAllByRole('option')
@@ -38,12 +52,21 @@ describe('Autocomplete', () => {
   it('calls onSelect when a suggestion is clicked', async () => {
     const user = userEvent.setup()
     const onSelect = vi.fn()
+    const onChange = vi.fn()
 
-    render(Autocomplete, {
-      props: { value: '', onChange: () => {}, suggestions, onSelect, placeholder: 'Food name' },
-    })
+    const { rerender } = render(
+      <Autocomplete
+        value=""
+        onChange={onChange}
+        suggestions={suggestions}
+        onSelect={onSelect}
+        placeholder="Food name"
+      />
+    )
 
     await user.click(screen.getByLabelText('Food name'))
+
+    // Click on "Rice" suggestion
     await user.click(screen.getByText('Rice'))
     expect(onSelect).toHaveBeenCalledWith({
       name: 'Rice',
@@ -59,12 +82,19 @@ describe('Autocomplete', () => {
       { name: 'Chicken breast', calories: 280, protein: 52 },
     ]
 
-    render(Autocomplete, {
-      props: { value: 'chicken', onChange: () => {}, suggestions: mixedSuggestions, onSelect: () => {}, placeholder: 'Food name' },
-    })
+    render(
+      <Autocomplete
+        value="chicken"
+        onChange={() => {}}
+        suggestions={mixedSuggestions}
+        onSelect={() => {}}
+        placeholder="Food name"
+      />
+    )
 
     await user.click(screen.getByLabelText('Food name'))
     const options = screen.getAllByRole('option')
+    // "Chicken breast" (prefix match) should come before "Fried chicken" (substring)
     expect(options[0]).toHaveTextContent('Chicken breast')
     expect(options[1]).toHaveTextContent('Fried chicken')
   })
@@ -76,10 +106,15 @@ describe('Autocomplete', () => {
       calories: 100,
       protein: 10,
     }))
-
-    render(Autocomplete, {
-      props: { value: '', onChange: () => {}, suggestions: manySuggestions, onSelect: () => {}, placeholder: 'Food name' },
-    })
+    render(
+      <Autocomplete
+        value=""
+        onChange={() => {}}
+        suggestions={manySuggestions}
+        onSelect={() => {}}
+        placeholder="Food name"
+      />
+    )
 
     await user.click(screen.getByLabelText('Food name'))
     expect(screen.getAllByRole('option')).toHaveLength(8)
@@ -87,9 +122,15 @@ describe('Autocomplete', () => {
 
   it('hides suggestions when no matches', async () => {
     const user = userEvent.setup()
-    render(Autocomplete, {
-      props: { value: 'xyz', onChange: () => {}, suggestions, onSelect: () => {}, placeholder: 'Food name' },
-    })
+    render(
+      <Autocomplete
+        value="xyz"
+        onChange={() => {}}
+        suggestions={suggestions}
+        onSelect={() => {}}
+        placeholder="Food name"
+      />
+    )
 
     await user.click(screen.getByLabelText('Food name'))
     expect(screen.queryByRole('listbox')).not.toBeInTheDocument()

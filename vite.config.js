@@ -1,20 +1,13 @@
 import { defineConfig } from 'vitest/config'
-import { svelte } from '@sveltejs/vite-plugin-svelte'
+import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-  plugins: [svelte(), tailwindcss()],
+  plugins: [react(), tailwindcss()],
   base: '/brandon-diet-tracker/',
-  resolve: {
-    conditions: ['browser'],
-  },
   test: {
-    environment: 'jsdom',
+    environment: 'happy-dom',
     setupFiles: './src/test/setup.js',
-    include: ['src/**/*.test.js', 'src/test/steps/*.steps.js'],
-    alias: {
-      // Force Svelte to use browser bundle in tests
-      'svelte': 'svelte',
-    },
+    include: ['src/**/*.test.{js,jsx}', 'src/test/steps/*.steps.{js,jsx}'],
   },
 })

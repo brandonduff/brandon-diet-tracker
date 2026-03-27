@@ -1,8 +1,9 @@
 import '@testing-library/jest-dom/vitest'
 import { afterEach } from 'vitest'
-import { cleanup } from '@testing-library/svelte'
+import { cleanup } from '@testing-library/react'
 
-// Node 25 localStorage polyfill
+// Node 25 has a built-in localStorage that lacks standard Web Storage API methods.
+// Polyfill with a proper implementation for tests.
 const store = new Map()
 const storageMock = {
   getItem: (key) => store.get(key) ?? null,

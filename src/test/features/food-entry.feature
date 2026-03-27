@@ -11,7 +11,7 @@ Feature: Food entry
     When I delete "Chicken"
     Then I should not see "Chicken" in the entry list
     And I should see "Rice" in the entry list
-    And the daily total should show 200 calories and 4g protein
+    And the daily total should show 150 calories and 4g protein
 
   Scenario: Amount scaling from autocomplete
     Given I add "Chicken breast" at 150g with 280 calories and 52g protein

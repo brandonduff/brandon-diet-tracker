@@ -2,12 +2,12 @@
 
 ## Tech Stack
 
-- **Frontend:** Svelte + Vite
+- **Frontend:** React + Vite
 - **Styling:** Tailwind CSS (mobile-first)
 - **Storage:** localStorage (no backend)
 - **PWA:** Service worker + manifest for "Add to Home Screen"
 - **Hosting:** GitHub Pages
-- **Testing:** Vitest + Svelte Testing Library + jsdom + Gherkin behavioral specs
+- **Testing:** Vitest + React Testing Library + happy-dom
 
 ## Development Model
 
